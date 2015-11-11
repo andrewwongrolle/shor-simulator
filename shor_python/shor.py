@@ -26,7 +26,7 @@ def shor(N):
     a = rand_coprime(N) 
 
     r = find_order(a)
-    while r % 2 == 0 or (pow(a,r/2) % N) == -1: 
+    while r % 2 == 0 or (pow(a,r/2,N) == -1: 
         a = rand_coprime(N)
         print "Random coprime seed is %d" % a
         r = find_order(a)
