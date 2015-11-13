@@ -19,14 +19,14 @@ e4 = np.array([0,0,0,1], dtype = complex) # |11>
 
 # Bell states
 #  1 / sqrt(2) * |01> + |10>
-psi_plus = 1 / sqrt(2) * np.array([0,1,1,0], dtype = complex) 
+psi_plus = 1 / sqrt(2) * (e2 + e3)
 
 # 1 / sqrt(2) * |01> - |10>
-psi_minus = 1 / sqrt(2 ) * np.array([0,1,-1,0], dtype = complex)   
+psi_minus = 1 / sqrt(2 ) * (e2 - e3)
 
 # 1 / sqrt(2) * |00> + |11>
-phi_plus = 1 / sqrt(2 ) * np.array([1,0,0,1], dtype = complex)   
+phi_plus = 1 / sqrt(2 ) * (e1 + e4)
 
 # 1 / sqrt(2) * |00> - |11>
-phi_minus = 1 / sqrt(2 ) * np.array([1,0,0,-1], dtype = complex)   
+phi_minus = 1 / sqrt(2 ) * (e1 - e4)
 

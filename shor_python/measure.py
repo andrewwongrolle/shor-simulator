@@ -16,14 +16,11 @@ import cmath
 def measure(qubits):
     random.seed()
     n = random.random()
-    pr_sum = [qubits[0] * qubits[0].conjugate()]
-    if pr_sum[0] > n:
-        return 0
-    
-    for i in range(1,len(qubits)):
-        pr_sum.append(qubits[i] * qubits[i].conjugate())
-        pr_sum[i] += pr_sum[i-1]
-        if pr_sum[i] > n:
+    accum = 0
+    for i in xrange(0,len(qubits)):    
+        accum += qubits[i] * qubits[i].conjugate()
+        if accum > n:
             return i
-
-    return -1
+        i += 1 
+    # signifies error
+    return -1 

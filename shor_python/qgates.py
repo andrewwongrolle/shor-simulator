@@ -10,7 +10,7 @@ def qnot(q):
 # Hadamard
 def hadamard(q):
     return np.array([sqrt(0.5)*(q[0]+q[1]),sqrt(0.5)*(q[0]-q[1])], dtype = complex)
-
+H = sqrt(0.5) * np.array([[1, 1],[1, -1]], dtype = complex)
 # Rotate
 # takes in theta as angle of rotation in radians
 def rotate(q,theta):
@@ -24,6 +24,7 @@ def phase_flip(q):
 # CNOT
 # takes in two-qubit system vector
 # performs NOT gate on target vector if first qubit is in state 1
-def CNOT(q):
+def cnot(q):
     return np.array([q[0],q[1],q[3],q[2]], dtype = complex)
-        
+       
+CNOT = np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]], dtype = complex)
