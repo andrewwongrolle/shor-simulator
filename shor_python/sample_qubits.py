@@ -1,21 +1,21 @@
 # sample qubits for testing
-
+# qubits are represented by np matrices
 import numpy as np
 from math import sqrt
 
 # two dimensional standard basis for one qubit system
-zero = np.array([1,0], dtype = complex)
-one = np.array([0,1], dtype = complex)
+zero = np.array([[1],[0]], dtype = complex)
+one = np.array([[0],[1]], dtype = complex)
 
 # plus/minus basis vectors for one qubit system
-plus = (1 / sqrt(2)) * np.array([1, 1], dtype = complex)
-minus = (1 / sqrt(2)) * np.array([1,-1], dtype = complex)
+plus = (1 / sqrt(2)) * np.array([[1], [1]], dtype = complex)
+minus = (1 / sqrt(2)) * np.array([[1],[-1]], dtype = complex)
 
 # four dimensional basis vectors for two qubits system
-e1 = np.array([1,0,0,0], dtype = complex) # |00>
-e2 = np.array([0,1,0,0], dtype = complex) # |01>
-e3 = np.array([0,0,1,0], dtype = complex) # |10>
-e4 = np.array([0,0,0,1], dtype = complex) # |11>
+e1 = np.array([[1],[0],[0],[0]], dtype = complex) # |00>
+e2 = np.array([[0],[1],[0],[0]], dtype = complex) # |01>
+e3 = np.array([[0],[0],[1],[0]], dtype = complex) # |10>
+e4 = np.array([[0],[0],[0],[1]], dtype = complex) # |11>
 
 # Bell states
 #  1 / sqrt(2) * |01> + |10>

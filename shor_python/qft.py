@@ -4,10 +4,15 @@
 import numpy as np
 import math
 import cmath
+from qgates import nkron, selfkron
+import qgates
+import sample_qubits
+import pretty_print_complex as ppc
 
-def qft(in_qubits):
+def mqft(reg):
+    """Simple matrix multiplication implementation of the QFT"""
     # dimension of the QFT
-    M = len(in_qubits)
+    M = len(reg)
     # the Mth root of unity
     p = complex(0, 2*math.pi / M)
     omega = cmath.exp(p)
@@ -16,6 +21,51 @@ def qft(in_qubits):
     for x in xrange(M):
         for y in xrange(M):
             transform[x][y] = (1 / math.sqrt(M)) * pow(omega,x*y)
-    return np.dot(transform,in_qubits)
+    return np.dot(transform,reg)
     
+def fqft(reg):
+    """Circuit implementation of the QFT"""
+    # dimension of the QFT
+    M = len(reg)
+    # number of qubits
+    m = int(math.log(M, 2)) 
+    # print "Number of qubits = %d" % m
+    for j in xrange(m):
+        # Hadamard on jth qubit
+        # print "Taking H on qubit %d ..." % j
+        Hj = nkron(selfkron(qgates.I, j), qgates.H, selfkron(qgates.I, m-j-1))
+        reg = np.dot(Hj, reg)
+        # ppc.print_state(reg)
+        # print "\n"
+        # Controlled phase changes Rk on all the other qubits
+        for k in xrange(2, m-j+1):
+            CRk = qgates.CREMOTE(gate=qgates.Rk(k), control=j+k-1, target=j, n=m)
+            reg = np.dot(CRk, reg)
+    # reverse output qubits using SWAP gates
+    for j in xrange(m):
+        for k in xrange(m-j-1):
+            # swap kth and k+1th qubit
+            SWAPk = nkron(selfkron(qgates.I, k), qgates.SWAP, selfkron(qgates.I, m-k-2))
+            reg = np.dot(SWAPk, reg)
+
+    return reg 
+
+
+# tests
+f = 0.5 * np.array([[1],[1],[1],[1]], dtype = complex) 
+g = qgates.nkron(sample_qubits.zero, sample_qubits.zero)
+h = qgates.nkron(sample_qubits.zero, sample_qubits.one)
+
+_tests = [f,g,h]
+
+def _runtest(f, x):
+    print "Taking QFT of ", 
+    ppc.print_state(x)
+    print "\n..."
+    ppc.print_state(f(x))
+    print "\n"
+
+for test in _tests:
+    _runtest(mqft, test)
+    _runtest(fqft, test)
 
