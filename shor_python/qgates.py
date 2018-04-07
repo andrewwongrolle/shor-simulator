@@ -1,25 +1,12 @@
 # Quantum gates.
 # Assumes input qubits are 1D matrices 
 
-from math import sqrt
 import numpy as np
-from sample_qubits import *
-import pretty_print_complex as ppc
+from math import sqrt
 from cmath import exp
-
-# Kronecker product of n matrices
-def nkron(*args):
-    prod = np.eye(1)
-    for arg in args:
-        prod = np.kron(prod, arg)
-    return prod 
-
-# Kronecker product of a matrix with itself n times
-def selfkron(matrix, n):
-    prod = np.eye(1)
-    for _ in range(n):
-        prod = np.kron(prod, matrix)
-    return prod
+from qutils import *
+import pretty_print_complex as ppc
+from sample_qubits import *
 
 # Identity
 I = np.eye(2, dtype = complex)
@@ -73,14 +60,9 @@ def CREMOTE(gate, control, target, n):
             preserve = nkron(preserve, P0)
             transform = nkron(transform, P1)
         elif x == target:
-            preserve = nkron(preserve, I)
+            preserve = nkron(preserve, I, eyes=[1])
             transform = nkron(transform, gate)
         else:
-            preserve = nkron(preserve, I)
-            transform = nkron(transform, I)
+            preserve = nkron(preserve, I, eyes=[1])
+            transform = nkron(transform, I, eyes=[1])
     return (preserve + transform)
-
-# test
-# print CNOT == CREMOTE(NOT, 0, 1, 2)
-# print nkron(CNOT, I) == CREMOTE(NOT, 0, 1, 3)
-# CNOT03 = CREMOTE(NOT, 0, 3, 5)

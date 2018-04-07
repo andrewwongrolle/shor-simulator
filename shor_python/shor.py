@@ -6,6 +6,7 @@ import cmath
 import numpy as np
 from measure import measure
 import random
+from find_order import find_order
 
 # Returns random number coprime to argument.
 def rand_coprime(N):
@@ -26,8 +27,8 @@ def shor(N):
     # ensure we don't find a nontrivial factor with first random number
     a = rand_coprime(N) 
 
-    r = find_order(a)
-    
+    r = find_order(a, N)
+    return    
     while ((r % 2 == 1) or (pow(a,r/2,N) == -1)): 
         a = rand_coprime(N)
         print "Random coprime seed is %d" % a

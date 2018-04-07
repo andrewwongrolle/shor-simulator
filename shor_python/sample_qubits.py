@@ -2,7 +2,7 @@
 # qubits are represented by np matrices
 import numpy as np
 from math import sqrt
-
+from qutils import *
 # two dimensional standard basis for one qubit system
 zero = np.array([[1],[0]], dtype = complex)
 one = np.array([[0],[1]], dtype = complex)
@@ -30,3 +30,6 @@ phi_plus = 1 / sqrt(2 ) * (e1 + e4)
 # 1 / sqrt(2) * |00> - |11>
 phi_minus = 1 / sqrt(2 ) * (e1 - e4)
 
+# the zero state in an n qubit system
+def zero_state(n):
+    return self_kron(zero, n)

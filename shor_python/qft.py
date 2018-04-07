@@ -4,7 +4,7 @@
 import numpy as np
 import math
 import cmath
-from qgates import nkron, selfkron
+from qutils import *
 import qgates
 import sample_qubits
 import pretty_print_complex as ppc
@@ -33,7 +33,7 @@ def fqft(reg):
     for j in xrange(m):
         # Hadamard on jth qubit
         # print "Taking H on qubit %d ..." % j
-        Hj = nkron(selfkron(qgates.I, j), qgates.H, selfkron(qgates.I, m-j-1))
+        Hj = nkron(i_kron(j), qgates.H, i_kron(m-j-1), eyes=[0,2])
         reg = np.dot(Hj, reg)
         # ppc.print_state(reg)
         # print "\n"
@@ -45,27 +45,7 @@ def fqft(reg):
     for j in xrange(m):
         for k in xrange(m-j-1):
             # swap kth and k+1th qubit
-            SWAPk = nkron(selfkron(qgates.I, k), qgates.SWAP, selfkron(qgates.I, m-k-2))
+            SWAPk = nkron(i_kron(k), qgates.SWAP, i_kron(m-k-2), eyes=[0,2])
             reg = np.dot(SWAPk, reg)
 
     return reg 
-
-
-# tests
-f = 0.5 * np.array([[1],[1],[1],[1]], dtype = complex) 
-g = qgates.nkron(sample_qubits.zero, sample_qubits.zero)
-h = qgates.nkron(sample_qubits.zero, sample_qubits.one)
-
-_tests = [f,g,h]
-
-def _runtest(f, x):
-    print "Taking QFT of ", 
-    ppc.print_state(x)
-    print "\n..."
-    ppc.print_state(f(x))
-    print "\n"
-
-for test in _tests:
-    _runtest(mqft, test)
-    _runtest(fqft, test)
-
